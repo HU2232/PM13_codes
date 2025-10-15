@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[YOUR NAME] — Portfolio</title>
+  <meta name="description" content="Portfolio of [YOUR NAME]." />
+  <style>
+    :root{
+      --bg: 12 12 16;
+      --fg: 240 240 244;
+      --muted: 180 180 190;
+      --acc: 120 87 255;
+      --acc2: 0 188 212;
+      --card: 22 22 28 / 0.6;
+      --blur: 16px;
+      --radius: 18px;
+      --shadow: 0 8px 20px rgba(0,0,0,.3);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: rgb(var(--fg));
+      background: radial-gradient(900px 700px at 100% 0%, rgba(var(--acc), .15), transparent 40%),
+                  radial-gradient(900px 700px at 0% 100%, rgba(var(--acc2), .15), transparent 40%),
+                  rgb(var(--bg));
+      overflow: hidden;
+    }
+    body::before{content:""; position:fixed; inset:0; z-index:-2; background:
+      url('https://source.unsplash.com/photo-dEt1bDpjMp8') center/cover no-repeat,
+      linear-gradient(120deg, rgba(var(--acc),.25), rgba(var(--acc2),.25));
+      animation:hue 20s linear infinite;
+    }
+    @keyframes hue { to{ filter:hue-rotate(360deg); } }
+    .grain{position:fixed; inset:-20%; pointer-events:none; z-index:-1; opacity:.15; background:
+      repeating-conic-gradient(from 0deg, rgba(255,255,255,.06) 0 2deg, transparent 2deg 4deg);
+      filter: blur(.5px) contrast(1.2);
+      animation: grainShift 6s steps(6) infinite alternate;
+    }
+    @keyframes grainShift{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-10px,6px,0)}}
+
+    .header{position:fixed; top:12px; left:50%; transform:translateX(-50%); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur));
+      background: rgba(var(--card)); border:1px solid rgba(255,255,255,.08); padding:8px 14px; border-radius: 999px; box-shadow: var(--shadow); display:flex; gap:14px; align-items:center; z-index:50}
+    .header a{color:inherit; text-decoration:none; opacity:.9; font-size:13px}
+    .brand{font-weight:700; letter-spacing:.2px; font-size:13px}
+    .btn{display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius: 12px; border:1px solid rgba(255,255,255,.14); background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.02)); color:inherit; cursor:pointer; font-size:13px}
+
+    .dotnav{position:fixed; right:14px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:10px; z-index:40}
+    .dotnav button{width:9px; height:9px; border-radius:999px; border:none; background:#777; opacity:.5; cursor:pointer; transition:all .2s}
+    .dotnav button.active{opacity:1; transform:scale(1.4); background: linear-gradient(135deg, rgb(var(--acc)), rgb(var(--acc2)))}
+
+    .slides{height:100dvh; overflow:auto; scroll-snap-type:y mandatory; scroll-behavior:smooth;}
+    .slide{min-height:100dvh; scroll-snap-align:start; display:grid; place-items:center; padding:48px 16px; position:relative}
+
+    .card{width:min(1000px, 92vw); background: rgba(var(--card)); border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); box-shadow: var(--shadow); overflow:hidden; padding:28px 32px}
+    .title{font-size: clamp(24px, 3.8vw, 40px); line-height:1.2; margin:0 0 .4em}
+
+    .intro-card{display:grid; grid-template-columns: 180px 1fr; gap:22px; align-items:center}
+    .intro-photo{width:180px; height:180px; border-radius:14px; overflow:hidden; background:url('https://source.unsplash.com/random/400x400?portrait,light') center/cover no-repeat; box-shadow:0 6px 18px rgba(0,0,0,.28); position:relative}
+    .intro-photo::after{content:""; position:absolute; inset:0; background:linear-gradient(135deg, rgba(var(--acc),.3), rgba(var(--acc2),.3)); mix-blend-mode:overlay}
+
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px}
+    .g-5{grid-column: span 5}
+    .g-7{grid-column: span 7}
+    .project{position:relative; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:rgba(0,0,0,.2); transition: transform .25s ease, box-shadow .25s ease}
+    .project:hover{transform: translateY(-3px) rotate(-.2deg); box-shadow: 0 16px 32px rgba(0,0,0,.33)}
+    .project .cover{background-size: cover; background-position:center; aspect-ratio:16/9}
+    .title::after{content:""; display:block; width:60px; height:3px; margin-top:8px; border-radius:999px; background:linear-gradient(90deg, rgb(var(--acc)), rgb(var(--acc2))); opacity:.7}
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="header" role="navigation" aria-label="Top">
+    <span class="brand">[YOUR NAME] · Portfolio</span>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#gdd">GDD</a>
+    <a href="#prototypes">Prototypes</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <button class="btn" id="themeToggle">🌓</button>
+  </div>
+
+  <div class="dotnav" id="dotnav"></div>
+
+  <main class="slides" id="slides" tabindex="0">
+    <section class="slide" id="about">
+      <div class="card intro-card">
+        <div class="intro-photo"></div>
+        <div>
+          <h1 class="title">안녕하세요, [YOUR NAME]입니다.</h1>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="projects">
+      <div class="card">
+        <h2 class="title">대표 프로젝트</h2>
+        <div class="grid">
+          <article class="project g-7 wide"><div class="cover" style="background-image:url('https://source.unsplash.com/collection/4270316/1600x900');"></div></article>
+          <article class="project g-5 tall mask-blob"><div class="cover" style="background-image:url('https://source.unsplash.com/photo--hI5dX2ObAs');"></div></article>
+          <article class="project g-5"><div class="cover" style="background-image:url('https://source.unsplash.com/photo-dEt1bDpjMp8');"></div></article>
+          <article class="project g-7 wide"><div class="cover" style="background-image:url('https://source.unsplash.com/random/1600x900?tech,grid');"></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="gdd">
+      <div class="card"><h2 class="title">GDD / 시스템 설계</h2></div>
+    </section>
+
+    <section class="slide" id="prototypes">
+      <div class="card">
+        <h2 class="title">프로토타입</h2>
+        <div class="grid">
+          <div class="project g-4"><div class="cover" style="background-image:url('https://source.unsplash.com/random/1200x675?ui,game');"></div></div>
+          <div class="project g-4"><div class="cover" style="background-image:url('https://source.unsplash.com/random/1200x675?code,interaction');"></div></div>
+          <div class="project g-4"><div class="cover" style="background-image:url('https://source.unsplash.com/random/1200x675?motion');"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="skills">
+      <div class="card"><h2 class="title">역량</h2></div>
+    </section>
+
+    <section class="slide" id="contact">
+      <div class="card"><h2 class="title">연락처</h2></div>
+    </section>
+  </main>
+</body>
+</html>
